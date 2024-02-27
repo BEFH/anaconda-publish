@@ -3,6 +3,12 @@
 set -ex
 set -o pipefail
 
+install_apt_packages(){
+    if [ ! -z "${INPUT_ADDITIONAL_APT_PACKAGES}" ]; then
+        apt-get install -y  ${INPUT_ADDITIONAL_APT_PACKAGES}
+    fi
+}
+
 go_to_build_dir() {
     if [ ! -z $INPUT_SUBDIR ]; then
         cd $INPUT_SUBDIR
@@ -52,6 +58,7 @@ upload_package(){
     fi
 }
 
+install_apt_packages
 go_to_build_dir
 check_if_meta_yaml_file_exists
 build_and_test_package
